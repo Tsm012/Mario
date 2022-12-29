@@ -70,11 +70,17 @@ public class Window{
 		if ( glfwWindow == NULL )
 			throw new RuntimeException("Failed to create the GLFW window");
 
+
+		glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePositionCallback);
+		glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
+		glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
+		glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
+
 		// Setup a key callback. It will be called every time a key is pressed, repeated or released.
-		glfwSetKeyCallback(glfwWindow, (window, key, scancode, action, mods) -> {
-			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-				glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-		});
+		// glfwSetKeyCallback(glfwWindow, (window, key, scancode, action, mods) -> {
+		// 	if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
+		// 		glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+		// });
 
 		// Get the thread stack and push a new frame
 		try ( MemoryStack stack = stackPush() ) {
@@ -125,6 +131,14 @@ public class Window{
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
 			glfwPollEvents();
+
+			if(KeyListener.isKeyPressed(GLFW_KEY_SPACE)){
+				System.out.println("space");
+			}
+
+			if(MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_1)){
+				System.out.println("mousey");
+			}
 		}
 	}
 }
