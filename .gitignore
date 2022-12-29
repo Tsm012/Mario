@@ -4,7 +4,11 @@
 # Ignore Gradle build output directory
 build
 
+#ignore compiled files
 app/bin
+
+#ignore .vscode
+.vscode
 
 ### Java ###
 # Compiled class file
