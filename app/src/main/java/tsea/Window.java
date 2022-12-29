@@ -18,11 +18,13 @@ public class Window{
     private int width, height;
     private String title; 
     private static Window window = null;
+	private float red, blue, green, alpha;
 
     public Window(){
         this.width = 1080;
         this.height = 720;
         this.title = "Mario";
+		this.red = this.blue = this.green = this.alpha = 1;
     }
     
     public static Window get() {
@@ -119,11 +121,14 @@ public class Window{
 		GL.createCapabilities();
 
 		// Set the clear color
-		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(red, green, blue, alpha);
+
+		boolean fade = false;
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while ( !glfwWindowShouldClose(glfwWindow) ) {
+			glClearColor(red, green, blue, alpha);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
 			glfwSwapBuffers(glfwWindow); // swap the color buffers
@@ -132,8 +137,18 @@ public class Window{
 			// invoked during this call.
 			glfwPollEvents();
 
+			if(fade){
+				this.red = Math.max(red - 0.01f, 0);
+				this.green = Math.max(green - 0.01f, 0);
+				this.blue = Math.max(blue - 0.01f, 0);
+				this.alpha = Math.max(alpha - 0.01f, 0);
+			}
+
 			if(KeyListener.isKeyPressed(GLFW_KEY_SPACE)){
 				System.out.println("space");
+				fade = true;
+			} else {
+				fade = false;
 			}
 
 			if(MouseListener.mouseButtonDown(GLFW_MOUSE_BUTTON_1)){
