@@ -49,8 +49,10 @@ public class Window {
 				currentScene = new LevelScene();
 				break;
 			default:
-				break;
+				//Bad
+				return;
 		}
+		currentScene.init();
 	}
 
 	// The window handle
@@ -95,14 +97,6 @@ public class Window {
 		glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
 		glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
 
-		// Setup a key callback. It will be called every time a key is pressed, repeated
-		// or released.
-		// glfwSetKeyCallback(glfwWindow, (window, key, scancode, action, mods) -> {
-		// if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-		// glfwSetWindowShouldClose(window, true); // We will detect this in the
-		// rendering loop
-		// });
-
 		// Get the thread stack and push a new frame
 		try (MemoryStack stack = stackPush()) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
@@ -129,10 +123,6 @@ public class Window {
 		// Make the window visible
 		glfwShowWindow(glfwWindow);
 
-		Window.changeScene(SCENE.LEVEL_EDITOR);
-	}
-
-	private void loop() {
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -140,6 +130,13 @@ public class Window {
 		// bindings available for use.
 		GL.createCapabilities();
 
+		Window.changeScene(SCENE.LEVEL_EDITOR);
+	}
+
+	private void loop() {
+		
+		//GL.createCapabilities();
+		
 		// Set the clear color
 		glClearColor(red, green, blue, alpha);
 
