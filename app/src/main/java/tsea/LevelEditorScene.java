@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.ARBVertexArrayObject.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
 import renderer.Shader;
@@ -17,11 +18,11 @@ public class LevelEditorScene extends Scene {
     private Shader defaultShader;    
     
     private float[] vertexArray = {
-        //Position             //color 
-        0.5f, -0.5f, 0.0f,     1.0f, 0.0f, 0.0f, 1.0f, // Bottom Left
-        -0.5f, 0.5f, 0.0f,     0.0f, 1.0f, 0.0f, 1.0f, // Top Left
-        0.5f, 0.5f, 0.0f,      0.0f, 0.0f, 1.0f, 1.0f, // Top Right
-        -0.5f, -0.5f, 0.0f,    1.0f, 1.0f, 0.0f, 1.0f  // Bottom Right
+        //Position               //color 
+        475.5f, 350.5f, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f, // Bottom Left
+        350.5f, 450.5f, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f, // Top Left
+        475.5f, 450.5f, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f, // Top Right
+        350.5f, 350.5f, 0.0f,    1.0f, 1.0f, 0.0f, 1.0f  // Bottom Right
     };
 
     //Counter Clockwise
@@ -32,6 +33,7 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void init() {
+        this.camera = new Camera(new Vector2f());
         this.defaultShader = new Shader("./assets/shaders/default_vertex_shader.glsl", "./assets/shaders/default_fragment_shader.glsl");
         defaultShader.compile();
         
@@ -73,6 +75,10 @@ public class LevelEditorScene extends Scene {
     @Override
     public void update(double deltaTime) {
         defaultShader.use();
+        camera.position.x -= deltaTime * 50.0f;
+
+        defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
+        defaultShader.uploadMat4f("uView", camera.getViewMatrix());
         glBindVertexArray(vaoId);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);

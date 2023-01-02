@@ -1,13 +1,16 @@
 package tsea;
 
 public abstract class Scene {
-    public Scene() {
 
+    protected Camera camera; 
+
+    public Scene() {
+        
     }
 
     public void init() {
 
     }
-    
+
     public abstract void update(double deltaTime);
 }
