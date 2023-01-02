@@ -27,8 +27,8 @@ public class Window {
 	}
 
 	public Window() {
-		this.width = 1920;
-		this.height = 1080;
+		this.width = 1080;
+		this.height = 720;
 		this.title = "Mario";
 		this.red = this.blue = this.green = this.alpha = 1;
 	}
@@ -136,7 +136,7 @@ public class Window {
 	private void loop() {
 		
 		//GL.createCapabilities();
-		
+
 		// Set the clear color
 		glClearColor(red, green, blue, alpha);
 
