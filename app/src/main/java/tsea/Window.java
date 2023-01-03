@@ -27,8 +27,8 @@ public class Window {
 	}
 
 	public Window() {
-		this.width = 1080;
-		this.height = 720;
+		this.width = 1920;
+		this.height = 1080;
 		this.title = "Mario";
 		this.red = this.blue = this.green = this.alpha = 1;
 	}
