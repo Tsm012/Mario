@@ -1,4 +1,4 @@
-package tsea;
+package tsea.scenes;
 
 public class LevelScene extends Scene {
     public LevelScene() {

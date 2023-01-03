@@ -5,6 +5,12 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
+import tsea.input.KeyListener;
+import tsea.input.MouseListener;
+import tsea.scenes.LevelEditorScene;
+import tsea.scenes.LevelScene;
+import tsea.scenes.Scene;
+
 import java.nio.*;
 
 import static org.lwjgl.glfw.Callbacks.*;

@@ -1,4 +1,4 @@
-package tsea;
+package tsea.input;
 
 import java.util.HashMap;
 
