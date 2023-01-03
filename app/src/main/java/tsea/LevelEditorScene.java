@@ -8,6 +8,7 @@ import java.nio.IntBuffer;
 
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
+import static org.lwjgl.glfw.GLFW.*;
 
 import renderer.Shader;
 
@@ -21,7 +22,7 @@ public class LevelEditorScene extends Scene {
         //Position               //color 
         475.5f, 350.5f, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f, // Bottom Left
         350.5f, 450.5f, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f, // Top Left
-        475.5f, 450.5f, 0.0f,    0.0f, 0.0f, 1.0f, 1.0f, // Top Right
+        475.5f, 450.5f, 0.0f,    1.0f, 0.0f, 1.0f, 1.0f, // Top Right
         350.5f, 350.5f, 0.0f,    1.0f, 1.0f, 0.0f, 1.0f  // Bottom Right
     };
 
@@ -79,6 +80,8 @@ public class LevelEditorScene extends Scene {
 
         defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
         defaultShader.uploadMat4f("uView", camera.getViewMatrix());
+        defaultShader.uploadFloat("uTime", (float) glfwGetTime());
+
         glBindVertexArray(vaoId);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
