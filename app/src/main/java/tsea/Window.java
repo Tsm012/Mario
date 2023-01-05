@@ -59,6 +59,7 @@ public class Window {
 				return;
 		}
 		currentScene.init();
+		currentScene.start();
 	}
 
 	// The window handle

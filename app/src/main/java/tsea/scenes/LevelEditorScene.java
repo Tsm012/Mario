@@ -12,13 +12,16 @@ import static org.lwjgl.glfw.GLFW.*;
 
 import renderer.Shader;
 import renderer.Texture;
+import tsea.GameObject;
+import tsea.components.FontRenderer;
+import tsea.components.SpriteRenderer;
 
 
 public class LevelEditorScene extends Scene {
 
     private int vaoId, vboId, eboId;
     private Shader defaultShader;
-    private Texture testTexture;    
+    private Texture testTexture;
     
     private float[] vertexArray = {
         //Position           //color 
@@ -36,6 +39,11 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void init() {
+        var testObject = new GameObject("shantz");
+        testObject.addComponent(new SpriteRenderer());
+        testObject.addComponent(new FontRenderer());
+        this.addGameObjectsToScene(testObject);
+
         this.camera = new Camera(new Vector2f());
         this.defaultShader = new Shader("./assets/shaders/default_vertex_shader.glsl", "./assets/shaders/default_fragment_shader.glsl");
         defaultShader.compile();
@@ -101,5 +109,7 @@ public class LevelEditorScene extends Scene {
 
         glBindVertexArray(0);
         defaultShader.detach();
+
+        this.gameObjects.forEach(gameObject -> gameObject.update(deltaTime));
     }
 }
