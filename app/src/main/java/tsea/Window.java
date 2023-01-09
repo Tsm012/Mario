@@ -46,6 +46,10 @@ public class Window {
 		return Window.window;
 	}
 
+	public Scene getScene() {
+		return currentScene;
+	}
+
 	public static void changeScene(SCENE scene) {
 		switch (scene) {
 			case LEVEL_EDITOR:

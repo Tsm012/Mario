@@ -1,85 +1,35 @@
 package tsea.scenes;
 
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.ARBVertexArrayObject.*;
-
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
 import org.joml.Vector2f;
-import org.lwjgl.BufferUtils;
-import static org.lwjgl.glfw.GLFW.*;
+import org.joml.Vector4f;
 
-import renderer.Shader;
-import renderer.Texture;
 import tsea.GameObject;
-import tsea.components.FontRenderer;
 import tsea.components.SpriteRenderer;
 
-
 public class LevelEditorScene extends Scene {
-
-    private int vaoId, vboId, eboId;
-    private Shader defaultShader;
-    private Texture testTexture;
-    
-    private float[] vertexArray = {
-        //Position           //color 
-        450f, 325f, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f,    1, 1,// Bottom Right
-        300f, 400f, 0.0f,    0.0f, 1.0f, 0.0f, 1.0f,    0, 0,// Top Left
-        450f, 425f, 0.0f,    1.0f, 0.0f, 1.0f, 1.0f,    1, 0,// Top Right
-        300f, 300f, 0.0f,    1.0f, 1.0f, 0.0f, 1.0f,    0, 1// Bottom Left
-    };
-
-    //Counter Clockwise
-    private int[] elementArray = {
-        2, 1, 0,
-        0, 1, 3
-    };
-
     @Override
     public void init() {
-        var testObject = new GameObject("shantz");
-        testObject.addComponent(new SpriteRenderer());
-        testObject.addComponent(new FontRenderer());
-        this.addGameObjectsToScene(testObject);
-
         this.camera = new Camera(new Vector2f());
-        this.defaultShader = new Shader("./assets/shaders/default_vertex_shader.glsl", "./assets/shaders/default_fragment_shader.glsl");
-        defaultShader.compile();
 
-        this.testTexture = new Texture("./assets/images/apple.jpg");
-        
-        vaoId = glGenVertexArrays();
-        glBindVertexArray(vaoId);
+        int xOffset = 10;
+        int yOffset = 10;
 
-        FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertexArray.length);
-        vertexBuffer.put(vertexArray).flip();
+        float totalWidth = (float) (600 - xOffset * 2);
+        float totalHeight = (float) (300 - yOffset * 2);
 
-        vboId = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vboId);
-        glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
+        float sizeX = totalWidth / 100.0f;
+        float sizeY = totalHeight / 100.0f;
 
-        IntBuffer elementBuffer = BufferUtils.createIntBuffer(elementArray.length);
-        elementBuffer.put(elementArray).flip();
+        for(int x = 0; x < 100; x++){
+            for(int y = 0; y < 100; y++){
+                float xPosition = xOffset + (x * sizeX);
+                float yPosition = yOffset + (y * sizeY);
 
-        eboId = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboId);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL_STATIC_DRAW);
-
-        int positionsSize = 3;
-        int colorSize = 4;
-        int uvSize = 2;
-        int vertexSizeBytes = (positionsSize + colorSize + uvSize) * Float.BYTES;
-
-        glVertexAttribPointer(0, positionsSize, GL_FLOAT, false, vertexSizeBytes, 0);
-        glEnableVertexAttribArray(0);
-
-        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes, positionsSize * Float.BYTES);
-        glEnableVertexAttribArray(1);
-
-        glVertexAttribPointer(2, uvSize, GL_FLOAT, false, vertexSizeBytes, (positionsSize + colorSize) * Float.BYTES);
-        glEnableVertexAttribArray(2);
+                GameObject gameObject = new GameObject("BR" + xPosition + "" + yPosition, new Transform(new Vector2f(xPosition, yPosition), new Vector2f(sizeX, sizeY)));
+                gameObject.addComponent(new SpriteRenderer(new Vector4f(xPosition / totalWidth, yPosition / totalHeight, 1, 1)));
+                this.addGameObjectToScene(gameObject);
+            }   
+        }
     }
 
     public LevelEditorScene() {
@@ -88,28 +38,8 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void update(double deltaTime) {
-        defaultShader.use();
-        
-        defaultShader.uploadTexture("TEX_SAMPLER", 0);
-        glActiveTexture(GL_TEXTURE0);
-        testTexture.bind();
-
-        defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
-        defaultShader.uploadMat4f("uView", camera.getViewMatrix());
-        defaultShader.uploadFloat("uTime", (float) glfwGetTime());
-
-        glBindVertexArray(vaoId);
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-
-        glDrawElements(GL_TRIANGLES, elementArray.length, GL_UNSIGNED_INT, 0);
-
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-
-        glBindVertexArray(0);
-        defaultShader.detach();
-
+        System.out.println("FPS BIOTCH " + (1.0f / deltaTime));
         this.gameObjects.forEach(gameObject -> gameObject.update(deltaTime));
+        this.renderer.render();
     }
 }

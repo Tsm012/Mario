@@ -5,14 +5,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import tsea.components.Component;
+import tsea.scenes.Transform;
 
 public class GameObject {
 
     private String name;
-    private List<Component> components = new ArrayList<Component>();
+    private List<Component> components;
+    public Transform transform;
 
     public GameObject(String name) {
         this.name = name;
+        this.components = new ArrayList<Component>();
+        this.transform = new Transform();
+    }
+
+    public GameObject(String name, Transform transform) {
+        this.name = name;
+        this.components = new ArrayList<Component>();
+        this.transform = transform;
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass) {
@@ -43,7 +53,6 @@ public class GameObject {
     }
 
     public void start() {
-        System.out.println("starting components for " + this.name);
         this.components.forEach(component -> component.start()); 
     }
 }
