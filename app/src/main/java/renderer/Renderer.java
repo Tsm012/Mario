@@ -7,7 +7,7 @@ import tsea.GameObject;
 import tsea.components.SpriteRenderer;
 
 public class Renderer {
-    private final int MAX_BATCH_SIZE = 1;
+    private final int MAX_BATCH_SIZE = 1000;
     private List<RenderBatch> batches;
 
     public Renderer() {

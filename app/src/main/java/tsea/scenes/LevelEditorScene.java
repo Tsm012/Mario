@@ -5,16 +5,18 @@ import org.joml.Vector4f;
 
 import tsea.GameObject;
 import tsea.components.SpriteRenderer;
+import util.AssetPool;
+import util.AssetReferences;
 
 public class LevelEditorScene extends Scene {
     @Override
     public void init() {
-        this.camera = new Camera(new Vector2f());
+        this.camera = new Camera(new Vector2f(-250,-250));
 
         int xOffset = 10;
         int yOffset = 10;
 
-        float totalWidth = (float) (600 - xOffset * 2);
+        float totalWidth = (float) (400 - xOffset * 2);
         float totalHeight = (float) (300 - yOffset * 2);
 
         float sizeX = totalWidth / 100.0f;
@@ -30,6 +32,12 @@ public class LevelEditorScene extends Scene {
                 this.addGameObjectToScene(gameObject);
             }   
         }
+
+        loadResources();
+    }
+
+    private void loadResources() {
+        AssetPool.getShader(AssetReferences.DEFAULT_VERTEX_FILE, AssetReferences.DEFAULT_SHADER_FILE);
     }
 
     public LevelEditorScene() {

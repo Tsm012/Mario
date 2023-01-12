@@ -4,6 +4,8 @@ import org.joml.Vector4f;
 
 import tsea.Window;
 import tsea.components.SpriteRenderer;
+import util.AssetPool;
+import util.AssetReferences;
 
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
@@ -37,9 +39,7 @@ public class RenderBatch {
     private Shader shader;
 
     public RenderBatch(int maxBatchSize) {
-        this.shader = new Shader("./assets/shaders/default_vertex_shader.glsl",
-        "./assets/shaders/default_fragment_shader.glsl");
-        shader.compile();
+        this.shader = AssetPool.getShader(AssetReferences.DEFAULT_VERTEX_FILE, AssetReferences.DEFAULT_SHADER_FILE); 
         this.sprites = new ArrayList<SpriteRenderer>();
         this.maxBatchSize = maxBatchSize;
 
