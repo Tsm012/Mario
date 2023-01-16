@@ -26,7 +26,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'mario.App'
+    mainClass = 'Main'
 }
 
 project.ext.lwjglVersion = "3.2.3"
