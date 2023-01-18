@@ -10,7 +10,15 @@ import org.lwjgl.BufferUtils;
 
 public class Texture {
     private String filepath;
-    private int texId;
+    private int texId, width, height;
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 
     public Texture(String filepath) {
         this.filepath =  filepath;
@@ -35,12 +43,15 @@ public class Texture {
             return;
         }
 
+        this.width = width.get(0);
+        this.height = height.get(0);
+
         switch (channels.get(0)) {
             case 3:
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0), 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
                 break;
             case 4:
-                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width.get(0), height.get(0), 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width.get(0), height.get(0), 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
                 break;
             default:
                 //bad

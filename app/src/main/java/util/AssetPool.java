@@ -7,10 +7,12 @@ import java.util.Map;
 
 import renderer.Shader;
 import renderer.Texture;
+import tsea.components.Spritesheet;
 
 public class AssetPool {
     private static Map<String, Shader> shaders = new HashMap<>();
     private static Map<String, Texture> textures = new HashMap<>();
+    private static Map<String, Spritesheet> spriteSheets = new HashMap<>();
 
     public static Shader getShader(String vertexSource, String fragmentSource) {
         File vertexFile = new File(vertexSource);
@@ -30,5 +32,17 @@ public class AssetPool {
             AssetPool.textures.put(textureFile.getAbsolutePath(), shader);
         }
         return AssetPool.textures.get(textureFile.getAbsolutePath());
+    }
+
+    public static void addSpritesheet(String resourceName, Spritesheet spritesheet){
+        File spritesheetFile = new File(resourceName);
+        if(!AssetPool.spriteSheets.containsKey(spritesheetFile.getAbsolutePath())){
+            AssetPool.spriteSheets.put(spritesheetFile.getAbsolutePath(), spritesheet);
+        }
+    }
+
+    public static Spritesheet getSpritesheet(String resourceName) {
+        File spritesheetFile = new File(resourceName);
+        return AssetPool.spriteSheets.getOrDefault(spritesheetFile.getAbsolutePath(), null);
     }
 }
