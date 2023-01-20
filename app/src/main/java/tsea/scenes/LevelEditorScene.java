@@ -3,21 +3,27 @@ package tsea.scenes;
 import org.joml.Vector2f;
 
 import tsea.GameObject;
-import tsea.components.Sprite;
 import tsea.components.SpriteRenderer;
 import tsea.components.Spritesheet;
 import util.AssetPool;
 import util.AssetReferences;
 
 public class LevelEditorScene extends Scene {
+
+    private GameObject gameObject;
+    private Spritesheet sprites;
+    private int spriteIndex = 0;
+    private float spriteFlipTime = 0.2f;
+    private float spriteFlipTimeLeft = 0.0f;
+
     @Override
     public void init() {
         loadResources();
         this.camera = new Camera(new Vector2f(-250,-250));
 
-        Spritesheet sprites = AssetPool.getSpritesheet(AssetReferences.DEFAULT_SPRITESHEET_FILE);
+        sprites = AssetPool.getSpritesheet(AssetReferences.DEFAULT_SPRITESHEET_FILE);
 
-        GameObject gameObject = new GameObject("Object", new Transform(new Vector2f(100,100),new Vector2f(256,256)));
+        gameObject = new GameObject("Object", new Transform(new Vector2f(100,100),new Vector2f(256,256)));
         gameObject.addComponent(new SpriteRenderer(sprites.getSprite(2)));
         this.addGameObjectToScene(gameObject);
 
@@ -42,7 +48,13 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void update(double deltaTime) {
-        System.out.println("FPS BIOTCH " + (1.0f / deltaTime));
+        spriteFlipTimeLeft -= deltaTime;
+        if (spriteFlipTimeLeft <= 0){
+            spriteFlipTimeLeft = spriteFlipTime;
+            spriteIndex++;
+            gameObject.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(spriteIndex%26));
+        }
+        //gameObject.transform.position.x += 10 * deltaTime;
         this.gameObjects.forEach(gameObject -> gameObject.update(deltaTime));
         this.renderer.render();
     }

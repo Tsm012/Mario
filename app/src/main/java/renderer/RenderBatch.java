@@ -5,6 +5,7 @@ import org.joml.Vector4f;
 
 
 import tsea.Window;
+import tsea.components.Sprite;
 import tsea.components.SpriteRenderer;
 import util.AssetPool;
 import util.AssetReferences;
@@ -110,9 +111,18 @@ public class RenderBatch {
     }
 
     public void render() {
-        // For now, we will rebuffer all data every frame
-        glBindBuffer(GL_ARRAY_BUFFER, vboID);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+        boolean rebufferData = false;
+        for(int i =0; i < sprites.size(); i++) {
+            if(sprites.get(i).isDirty()){
+                loadVertexProperties(i);
+                sprites.get(i).setClean();
+                rebufferData = true;
+            }
+        }
+        if(rebufferData) {
+            glBindBuffer(GL_ARRAY_BUFFER, vboID);
+            glBufferSubData(GL_ARRAY_BUFFER, 0, vertices);
+        }
 
         // Use shader
         shader.use();

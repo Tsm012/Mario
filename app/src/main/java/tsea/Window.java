@@ -36,7 +36,7 @@ public class Window {
 		this.width = 1920;
 		this.height = 1080;
 		this.title = "Mario";
-		this.red = this.blue = this.green = this.alpha = 1;
+		this.red = this.blue = this.green = this.alpha = 0;
 	}
 
 	public static Window get() {
