@@ -20,7 +20,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderBatch {
+public class RenderBatch implements Comparable<RenderBatch>{
     // Vertex
     // ======
     // Pos               Color
@@ -47,8 +47,14 @@ public class RenderBatch {
     private int vaoID, vboID;
     private int maxBatchSize;
     private Shader shader;
+    private int zIndex;
 
-    public RenderBatch(int maxBatchSize) {
+    public int getzIndex() {
+        return zIndex;
+    }
+
+    public RenderBatch(int maxBatchSize,int zIndex) {
+        this.zIndex = zIndex;
         this.shader = AssetPool.getShader(AssetReferences.DEFAULT_VERTEX_FILE, AssetReferences.DEFAULT_SHADER_FILE); 
         this.sprites = new ArrayList<SpriteRenderer>();
         this.maxBatchSize = maxBatchSize;
@@ -243,5 +249,10 @@ public class RenderBatch {
 
     public boolean hasTexture(Texture texture) {
         return this.textures.contains(texture);
+    }
+
+    @Override
+    public int compareTo(RenderBatch o) {
+        return Integer.compare(this.zIndex, o.getzIndex());
     }
 }

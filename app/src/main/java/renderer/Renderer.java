@@ -1,6 +1,8 @@
 package renderer;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import tsea.GameObject;
@@ -25,7 +27,7 @@ public class Renderer {
         boolean added = false; 
         
         for (RenderBatch batch : batches) {
-            if (batch.hasRoom()) {
+            if (batch.hasRoom() && batch.getzIndex() == spriteRenderer.gameObject.getzIndex()) {
                 Texture texture = spriteRenderer.getTexture();
                 if(texture == null || batch.hasTexture(texture) || batch.hasTextureRoom()) {
                     batch.addSprite(spriteRenderer);
@@ -36,10 +38,11 @@ public class Renderer {
         }
 
         if (!added) {
-            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE);
+            RenderBatch newBatch = new RenderBatch(MAX_BATCH_SIZE, spriteRenderer.gameObject.getzIndex());
             newBatch.start();
             batches.add(newBatch);
             newBatch.addSprite(spriteRenderer);
+            Collections.sort(batches);
         }
     }
 

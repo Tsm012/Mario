@@ -23,11 +23,11 @@ public class LevelEditorScene extends Scene {
 
         sprites = AssetPool.getSpritesheet(AssetReferences.DEFAULT_SPRITESHEET_FILE);
 
-        gameObject = new GameObject("Object", new Transform(new Vector2f(100,100),new Vector2f(256,256)));
+        gameObject = new GameObject("Object", new Transform(new Vector2f(100,100),new Vector2f(256,256)), 2);
         gameObject.addComponent(new SpriteRenderer(sprites.getSprite(2)));
         this.addGameObjectToScene(gameObject);
 
-        GameObject gameObject2 = new GameObject("Object2", new Transform(new Vector2f(400,100),new Vector2f(256,256)));
+        GameObject gameObject2 = new GameObject("Object2", new Transform(new Vector2f(400,100),new Vector2f(256,256)), 0);
         gameObject2.addComponent(new SpriteRenderer(sprites.getSprite(16)));
         this.addGameObjectToScene(gameObject2);
 
@@ -54,7 +54,7 @@ public class LevelEditorScene extends Scene {
             spriteIndex++;
             gameObject.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(spriteIndex%26));
         }
-        //gameObject.transform.position.x += 10 * deltaTime;
+        gameObject.transform.position.x += 10 * deltaTime;
         this.gameObjects.forEach(gameObject -> gameObject.update(deltaTime));
         this.renderer.render();
     }
