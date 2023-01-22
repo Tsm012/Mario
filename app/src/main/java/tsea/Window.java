@@ -8,8 +8,6 @@ import org.lwjgl.system.*;
 import imgui.ImGui;
 import imgui.ImGuiIO;
 import imgui.flag.ImGuiConfigFlags;
-import imgui.gl3.ImGuiImplGl3;
-import imgui.glfw.ImGuiImplGlfw;
 import tsea.input.KeyListener;
 import tsea.input.MouseListener;
 import tsea.scenes.LevelEditorScene;
@@ -25,8 +23,7 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class Window {
-	private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
-	private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+
 	
 	private String title;
 	private int width, height;
@@ -60,12 +57,6 @@ public class Window {
 	private static Scene currentScene = null;
 	public Scene getScene() {
 		return currentScene;
-	}
-
-	private void initImGui() {
-		ImGui.createContext();
-		ImGuiIO io = ImGui.getIO();
-		io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
 	}
 
 	private void initWindow() {
@@ -127,8 +118,7 @@ public class Window {
 	}
 
 	public void destroy() {
-		imGuiGlfw.dispose();
-		imGuiGl3.dispose();
+		imguiLayer.dispose();
 		ImGui.destroyContext();
 		Callbacks.glfwFreeCallbacks(windowPointer);
 		glfwDestroyWindow(windowPointer);
@@ -169,9 +159,7 @@ public class Window {
 
 	public void init() {
 		initWindow();
-		initImGui();
-		imGuiGlfw.init(windowPointer, true);
-		imGuiGl3.init(this.glslVersion);
+		this.imguiLayer.init(this.windowPointer, this.glslVersion);
 	}
 
 	private void loop() {
@@ -196,20 +184,7 @@ public class Window {
 				currentScene.update(deltaTime);
 			}
 			
-			imGuiGlfw.newFrame();
-			ImGui.newFrame();
-
-			imguiLayer.imgui();
-
-			ImGui.render();
-			imGuiGl3.renderDrawData(ImGui.getDrawData());
-
-			if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
-				final long backupWindowPtr = glfwGetCurrentContext();
-				ImGui.updatePlatformWindows();
-				ImGui.renderPlatformWindowsDefault();
-				glfwMakeContextCurrent(backupWindowPtr);
-			}
+			imguiLayer.update(deltaTime, currentScene);
 
 			glfwSwapBuffers(windowPointer); // swap the color buffers
 

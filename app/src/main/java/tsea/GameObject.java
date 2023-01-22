@@ -62,4 +62,8 @@ public class GameObject {
     public void start() {
         this.components.forEach(component -> component.start()); 
     }
+
+    public void imgui() {
+        this.components.forEach(component -> component.imgui()); 
+    }
 }

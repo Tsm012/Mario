@@ -8,5 +8,6 @@ public abstract class Component {
     public void start() {
 
     }
-    public abstract void update(double deltatime);
+    public void update(double deltatime){}
+    public void imgui() {}
 }

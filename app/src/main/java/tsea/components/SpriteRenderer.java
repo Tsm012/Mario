@@ -3,6 +3,7 @@ package tsea.components;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import imgui.ImGui;
 import renderer.Texture;
 import tsea.scenes.Transform;
 
@@ -68,5 +69,10 @@ public class SpriteRenderer extends Component{
 
     public void setClean() {
         this.isDirty = false;
+    }
+
+    @Override
+    public void imgui(){
+        ImGui.showDemoWindow();
     }
 }
