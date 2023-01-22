@@ -5,6 +5,11 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
+import imgui.ImGui;
+import imgui.ImGuiIO;
+import imgui.flag.ImGuiConfigFlags;
+import imgui.gl3.ImGuiImplGl3;
+import imgui.glfw.ImGuiImplGlfw;
 import tsea.input.KeyListener;
 import tsea.input.MouseListener;
 import tsea.scenes.LevelEditorScene;
@@ -20,35 +25,116 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class Window {
-	private static Window window = null;
+	private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
+	private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
+	
 	private String title;
 	private int width, height;
 	public float red, blue, green, alpha;
 
-	private static Scene currentScene = null;
+	private ImGuiLayer imguiLayer;
+	private long windowPointer;
+	private String glslVersion;
 
 	enum SCENE {
 		LEVEL_EDITOR,
 		LEVEL
 	}
 
-	public Window() {
+	public Window(ImGuiLayer imguiLayer) {
+		this.imguiLayer = imguiLayer;
 		this.width = 1920;
 		this.height = 1080;
 		this.title = "Mario";
 		this.red = this.blue = this.green = this.alpha = 0;
 	}
 
+	private static Window window = null;
 	public static Window get() {
 		if (Window.window == null) {
-			Window.window = new Window();
+			Window.window = new Window(new ImGuiLayer());
 		}
 		return Window.window;
 	}
 
+	private static Scene currentScene = null;
 	public Scene getScene() {
 		return currentScene;
 	}
+
+	private void initImGui() {
+		ImGui.createContext();
+		ImGuiIO io = ImGui.getIO();
+		io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
+	}
+
+	private void initWindow() {
+		// Setup an error callback. The default implementation
+		// will print the error message in System.err.
+		GLFWErrorCallback.createPrint(System.err).set();
+
+		// Initialize GLFW. Most GLFW functions will not work before doing this.
+		if ( !glfwInit() )
+			throw new IllegalStateException("Unable to initialize GLFW");
+
+		this.glslVersion = "#version 330";
+
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
+	
+		windowPointer = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
+		if (windowPointer == NULL)
+			throw new RuntimeException("Failed to create the GLFW window");
+
+		glfwSetCursorPosCallback(windowPointer, MouseListener::mousePositionCallback);
+		glfwSetMouseButtonCallback(windowPointer, MouseListener::mouseButtonCallback);
+		glfwSetScrollCallback(windowPointer, MouseListener::mouseScrollCallback);
+		glfwSetKeyCallback(windowPointer, KeyListener::keyCallback);
+
+		// Get the thread stack and push a new frame
+		try (MemoryStack stack = stackPush()) {
+			IntBuffer pWidth = stack.mallocInt(1); // int*
+			IntBuffer pHeight = stack.mallocInt(1); // int*
+
+			// Get the window size passed to glfwCreateWindow
+			glfwGetWindowSize(windowPointer, pWidth, pHeight);
+
+			// Get the resolution of the primary monitor
+			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+			// Center the window
+			glfwSetWindowPos(
+				windowPointer,
+					(vidmode.width() - pWidth.get(0)) / 2,
+					(vidmode.height() - pHeight.get(0)) / 2);
+		} // the stack frame is popped automatically	
+
+		glfwMakeContextCurrent(windowPointer);	
+		glfwSwapInterval(1);
+		glfwShowWindow(windowPointer);
+		// This line is critical for LWJGL's interoperation with GLFW's
+		// OpenGL context, or any context that is managed externally.
+		// LWJGL detects the context that is current in the current thread,
+		// creates the GLCapabilities instance and makes the OpenGL
+		// bindings available for use.
+		GL.createCapabilities();
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+		Window.changeScene(SCENE.LEVEL_EDITOR);
+	}
+
+	public void destroy() {
+		imGuiGlfw.dispose();
+		imGuiGl3.dispose();
+		ImGui.destroyContext();
+		Callbacks.glfwFreeCallbacks(windowPointer);
+		glfwDestroyWindow(windowPointer);
+		glfwTerminate();
+	}
+
 
 	public static void changeScene(SCENE scene) {
 		switch (scene) {
@@ -66,9 +152,6 @@ public class Window {
 		currentScene.start();
 	}
 
-	// The window handle
-	private long glfwWindow;
-
 	public void run() {
 		System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
@@ -76,81 +159,22 @@ public class Window {
 		loop();
 
 		// Free the window callbacks and destroy the window
-		glfwFreeCallbacks(glfwWindow);
-		glfwDestroyWindow(glfwWindow);
+		glfwFreeCallbacks(windowPointer);
+		glfwDestroyWindow(windowPointer);
 
 		// Terminate GLFW and free the error callback
 		glfwTerminate();
 		glfwSetErrorCallback(null).free();
 	}
 
-	private void init() {
-		// Setup an error callback. The default implementation
-		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(System.err).set();
-
-		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if (!glfwInit())
-			throw new IllegalStateException("Unable to initialize GLFW");
-
-		// Configure GLFW
-		glfwDefaultWindowHints(); // optional, the current window hints are already the default
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
-
-		// Create the window
-		glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
-		if (glfwWindow == NULL)
-			throw new RuntimeException("Failed to create the GLFW window");
-
-		glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePositionCallback);
-		glfwSetMouseButtonCallback(glfwWindow, MouseListener::mouseButtonCallback);
-		glfwSetScrollCallback(glfwWindow, MouseListener::mouseScrollCallback);
-		glfwSetKeyCallback(glfwWindow, KeyListener::keyCallback);
-
-		// Get the thread stack and push a new frame
-		try (MemoryStack stack = stackPush()) {
-			IntBuffer pWidth = stack.mallocInt(1); // int*
-			IntBuffer pHeight = stack.mallocInt(1); // int*
-
-			// Get the window size passed to glfwCreateWindow
-			glfwGetWindowSize(glfwWindow, pWidth, pHeight);
-
-			// Get the resolution of the primary monitor
-			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-			// Center the window
-			glfwSetWindowPos(
-					glfwWindow,
-					(vidmode.width() - pWidth.get(0)) / 2,
-					(vidmode.height() - pHeight.get(0)) / 2);
-		} // the stack frame is popped automatically
-
-		// Make the OpenGL context current
-		glfwMakeContextCurrent(glfwWindow);
-		// Enable v-sync
-		glfwSwapInterval(1);
-
-		// Make the window visible
-		glfwShowWindow(glfwWindow);
-
-		// This line is critical for LWJGL's interoperation with GLFW's
-		// OpenGL context, or any context that is managed externally.
-		// LWJGL detects the context that is current in the current thread,
-		// creates the GLCapabilities instance and makes the OpenGL
-		// bindings available for use.
-		GL.createCapabilities();
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
-		Window.changeScene(SCENE.LEVEL_EDITOR);
+	public void init() {
+		initWindow();
+		initImGui();
+		imGuiGlfw.init(windowPointer, true);
+		imGuiGl3.init(this.glslVersion);
 	}
 
 	private void loop() {
-		
-		//GL.createCapabilities();
-
 		// Set the clear color
 		glClearColor(red, green, blue, alpha);
 
@@ -160,7 +184,7 @@ public class Window {
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
-		while (!glfwWindowShouldClose(glfwWindow)) {
+		while (!glfwWindowShouldClose(windowPointer)) {
 			// Poll for window events. The key callback above will only be
 			// invoked during this call.
 			glfwPollEvents();
@@ -171,8 +195,23 @@ public class Window {
 			if (deltaTime >= 0) {
 				currentScene.update(deltaTime);
 			}
+			
+			imGuiGlfw.newFrame();
+			ImGui.newFrame();
 
-			glfwSwapBuffers(glfwWindow); // swap the color buffers
+			imguiLayer.imgui();
+
+			ImGui.render();
+			imGuiGl3.renderDrawData(ImGui.getDrawData());
+
+			if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
+				final long backupWindowPtr = glfwGetCurrentContext();
+				ImGui.updatePlatformWindows();
+				ImGui.renderPlatformWindowsDefault();
+				glfwMakeContextCurrent(backupWindowPtr);
+			}
+
+			glfwSwapBuffers(windowPointer); // swap the color buffers
 
 			endTime = glfwGetTime();
 
