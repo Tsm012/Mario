@@ -9,35 +9,24 @@ import tsea.scenes.Transform;
 
 public class SpriteRenderer extends Component{
 
-    private Transform lastTransform;
-    private Vector4f color;
-    private boolean isDirty = false;
+    private Sprite sprite = new Sprite();
+    private Vector4f color = new Vector4f(1,1,1,1);
+
+    private transient Transform lastTransform;
+    private transient boolean isDirty = false;
     
     public void setColor(Vector4f color) {
         if (this.color.equals(color)){
             this.color = color;
             this.isDirty = true;
         }
-
     }
-    private Sprite sprite;
-
+    
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
         this.isDirty = true;
     }
 
-    public SpriteRenderer(Vector4f color) {
-        this.color = color;
-        this.sprite = new Sprite(null);
-        this.isDirty = true;
-    }
-
-    public SpriteRenderer(Sprite sprite) {
-        this.sprite = sprite;
-        this.color = new Vector4f(1,1,1,1);
-        this.isDirty = true;
-    }
 
     @Override
     public void start() {      
@@ -58,6 +47,10 @@ public class SpriteRenderer extends Component{
     
     public Texture getTexture() {
         return sprite.getTexture();
+    }
+
+    public void setTexture(Texture texture) {
+        sprite.setTexture(texture);
     }
     public Vector2f[] getTextureCoordinates() {
         return sprite.getTextureCoordinates();

@@ -20,7 +20,7 @@ public class Texture {
         return width;
     }
 
-    public Texture(String filepath) {
+    public void init(String filepath) {
         this.filepath =  filepath;
 
         texId = glGenTextures();
@@ -59,6 +59,11 @@ public class Texture {
         }
 
         stbi_image_free(image);
+    }
+
+
+    public Texture() {
+        
     }
 
     public void bind() {

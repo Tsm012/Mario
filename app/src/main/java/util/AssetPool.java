@@ -28,8 +28,9 @@ public class AssetPool {
     public static Texture getTexture(String textureSource) {
         File textureFile = new File(textureSource);
         if (!AssetPool.shaders.containsKey(textureFile.getAbsolutePath())) {
-            Texture shader = new Texture(textureFile.getAbsolutePath());
-            AssetPool.textures.put(textureFile.getAbsolutePath(), shader);
+            Texture texture = new Texture();
+            texture.init(textureFile.getAbsolutePath());
+            AssetPool.textures.put(textureFile.getAbsolutePath(), texture);
         }
         return AssetPool.textures.get(textureFile.getAbsolutePath());
     }

@@ -3,8 +3,14 @@ package tsea.scenes;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import imgui.ImGui;
 import tsea.GameObject;
+import tsea.components.Component;
+import tsea.components.ComponentDeserializer;
+import tsea.components.GameObjectDeserializer;
 import tsea.components.SpriteRenderer;
 import tsea.components.Spritesheet;
 import util.AssetPool;
@@ -23,19 +29,20 @@ public class LevelEditorScene extends Scene {
         loadResources();
         this.camera = new Camera(new Vector2f(-250,-250));
 
+        if(levelLoaded)
+            return;
+
         sprites = AssetPool.getSpritesheet(AssetReferences.DEFAULT_SPRITESHEET_FILE);
 
         gameObject = new GameObject("Object", new Transform(new Vector2f(100,100),new Vector2f(256,256)), 2);
-        gameObject.addComponent(new SpriteRenderer(sprites.getSprite(2)));
+        
+        SpriteRenderer spriteRenderer = new SpriteRenderer();
+        spriteRenderer.setColor(new Vector4f(0,0,0,0));
+        gameObject.addComponent(spriteRenderer);
+        
         this.addGameObjectToScene(gameObject);
 
-       
-
-        GameObject gameObject2 = new GameObject("Object2", new Transform(new Vector2f(400,100),new Vector2f(256,256)), 0);
-        gameObject2.addComponent(new SpriteRenderer(new Vector4f(1,0,0,1)));
-        this.addGameObjectToScene(gameObject2);
-
-        this.activeGameObject = gameObject2;
+        this.activeGameObject = gameObject;
     }
 
     private void loadResources() {
@@ -52,12 +59,6 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void update(double deltaTime) {
-        spriteFlipTimeLeft -= deltaTime;
-        if (spriteFlipTimeLeft <= 0){
-            spriteFlipTimeLeft = spriteFlipTime;
-            spriteIndex++;
-            gameObject.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(spriteIndex%26));
-        }
         gameObject.transform.position.x += 10 * deltaTime;
         this.gameObjects.forEach(gameObject -> gameObject.update(deltaTime));
         this.renderer.render();
