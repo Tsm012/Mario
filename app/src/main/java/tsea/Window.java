@@ -138,6 +138,7 @@ public class Window {
 				//Bad
 				return;
 		}
+		currentScene.load();
 		currentScene.init();
 		currentScene.start();
 	}
@@ -170,7 +171,7 @@ public class Window {
 		double endTime;
 		double deltaTime = -1.0f;
 
-		currentScene.load();
+		
 
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.

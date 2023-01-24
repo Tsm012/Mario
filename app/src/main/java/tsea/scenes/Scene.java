@@ -114,12 +114,10 @@ public abstract class Scene {
             GameObject gameObject = new GameObject("Object", new Transform(new Vector2f(100,100),new Vector2f(256,256)), 2);
         
             SpriteRenderer spriteRenderer = new SpriteRenderer();
-            spriteRenderer.setColor(new Vector4f(0,0,0,0));
+            spriteRenderer.setColor(new Vector4f(1,0,0,1));
             gameObject.addComponent(spriteRenderer);
             
             this.addGameObjectToScene(gameObject);
-    
-            this.activeGameObject = gameObject;
         }
     }
 
