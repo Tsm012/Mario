@@ -26,17 +26,29 @@
             ]
           },
           "color": {
-            "x": 1.0,
-            "y": 1.0,
-            "z": 1.0,
+            "x": 0.77,
+            "y": 0.17325002,
+            "z": 0.17325002,
             "w": 1.0
+          }
+        }
+      },
+      {
+        "type": "tsea.components.RigidBody",
+        "properties": {
+          "colliderType": 0,
+          "friction": 0.0,
+          "velocity": {
+            "x": 0.0,
+            "y": 0.5,
+            "z": 0.0
           }
         }
       }
     ],
     "transform": {
       "position": {
-        "x": 100.0,
+        "x": 200.0,
         "y": 100.0
       },
       "scale": {
@@ -45,52 +57,5 @@
       }
     },
     "zIndex": 2
-  },
-  {
-    "name": "Object",
-    "components": [
-      {
-        "type": "tsea.components.SpriteRenderer",
-        "properties": {
-          "sprite": {
-            "textureCoords": [
-              {
-                "x": 1.0,
-                "y": 1.0
-              },
-              {
-                "x": 1.0,
-                "y": 0.0
-              },
-              {
-                "x": 0.0,
-                "y": 0.0
-              },
-              {
-                "x": 0.0,
-                "y": 1.0
-              }
-            ]
-          },
-          "color": {
-            "x": 1.0,
-            "y": 0.0,
-            "z": 1.0,
-            "w": 1.0
-          }
-        }
-      }
-    ],
-    "transform": {
-      "position": {
-        "x": 200.0,
-        "y": 200.0
-      },
-      "scale": {
-        "x": 256.0,
-        "y": 256.0
-      }
-    },
-    "zIndex": 3
   }
 ]

@@ -6,8 +6,6 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import imgui.ImGui;
-import imgui.ImGuiIO;
-import imgui.flag.ImGuiConfigFlags;
 import tsea.input.KeyListener;
 import tsea.input.MouseListener;
 import tsea.scenes.LevelEditorScene;

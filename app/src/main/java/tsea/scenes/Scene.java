@@ -109,16 +109,6 @@ public abstract class Scene {
 
             this.levelLoaded = true;    
         }
-
-        if(gameObjects.size() == 0) {
-            GameObject gameObject = new GameObject("Object", new Transform(new Vector2f(100,100),new Vector2f(256,256)), 2);
-        
-            SpriteRenderer spriteRenderer = new SpriteRenderer();
-            spriteRenderer.setColor(new Vector4f(1,0,0,1));
-            gameObject.addComponent(spriteRenderer);
-            
-            this.addGameObjectToScene(gameObject);
-        }
     }
 
     public Camera getCamera() {

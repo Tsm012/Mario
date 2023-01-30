@@ -2,6 +2,7 @@ package tsea.scenes;
 
 import org.joml.Vector2f;
 import tsea.GameObject;
+import tsea.components.RigidBody;
 import tsea.components.SpriteRenderer;
 import tsea.components.Spritesheet;
 import util.AssetPool;
@@ -17,10 +18,17 @@ public class LevelEditorScene extends Scene {
         loadResources();
         this.camera = new Camera(new Vector2f(-250,-250));
 
+        if(this.levelLoaded){
+            this.activeGameObject = gameObjects.get(0);
+            return;
+        }
+
         sprites = AssetPool.getSpritesheet(AssetReferences.DEFAULT_SPRITESHEET_FILE);
 
-        gameObject = new GameObject("Object", new Transform(new Vector2f(100,100),new Vector2f(256,256)), 2);
+        gameObject = new GameObject("Object", new Transform(new Vector2f(200,100),new Vector2f(256,256)), 2);
         gameObject.addComponent(new SpriteRenderer());
+        gameObject.addComponent(new RigidBody());
+        this.addGameObjectToScene(gameObject);
 
         this.activeGameObject = gameObject;
     }
