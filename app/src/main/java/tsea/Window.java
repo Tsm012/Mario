@@ -6,6 +6,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import imgui.ImGui;
+import tsea.core.ImGuiLayer;
 import tsea.input.KeyListener;
 import tsea.input.MouseListener;
 import tsea.scenes.LevelEditorScene;
@@ -25,6 +26,22 @@ public class Window {
 	
 	private String title;
 	private int width, height;
+	public static int getWidth() {
+        return get().width;
+    }
+
+    public static int getHeight() {
+        return get().height;
+    }
+
+    public static void setWidth(int newWidth) {
+        get().width = newWidth;
+    }
+
+    public static void setHeight(int newHeight) {
+        get().height = newHeight;
+    }
+
 	public float red, blue, green, alpha;
 
 	private ImGuiLayer imguiLayer;

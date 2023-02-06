@@ -8,19 +8,16 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joml.Vector2f;
-import org.joml.Vector4f;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import imgui.ImGui;
 import renderer.Renderer;
-import tsea.GameObject;
 import tsea.components.Component;
 import tsea.components.ComponentDeserializer;
 import tsea.components.GameObjectDeserializer;
-import tsea.components.SpriteRenderer;
+import tsea.core.Camera;
+import tsea.core.GameObject;
 
 public abstract class Scene {
 
@@ -104,9 +101,23 @@ public abstract class Scene {
         }
 
         if (inFile != "") {
-            for (GameObject gameObject : gson.fromJson(inFile, GameObject[].class))
+            int maxGameObjectId = -1;
+            int maxComponentId = -1;
+            for (GameObject gameObject : gson.fromJson(inFile, GameObject[].class)) {
                 addGameObjectToScene(gameObject);
-
+                for (Component component : gameObject.getallComponents()) {
+                    if(component.getUniqueId() > maxComponentId) {
+                        maxComponentId = component.getUniqueId(); 
+                    }
+                    if(gameObject.getUniqueId() > maxGameObjectId) {
+                        maxGameObjectId = gameObject.getUniqueId(); 
+                    }
+                }
+            }
+            maxGameObjectId++;
+            maxComponentId++;
+            GameObject.init(maxGameObjectId);
+            Component.init(maxComponentId);
             this.levelLoaded = true;    
         }
     }

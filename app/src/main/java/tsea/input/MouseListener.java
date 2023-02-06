@@ -2,7 +2,11 @@ package tsea.input;
 
 import java.util.HashMap;
 
+import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
+
+import tsea.Window;
+
 
 public class MouseListener {
     private static MouseListener instance;
@@ -92,5 +96,25 @@ public class MouseListener {
 
     public static boolean mouseButtonDown(int button) {
         return get().mouseButtonPressed.getOrDefault(button, false);
+    }
+
+    public static float getOrthoX() {
+        float currentX = getX();
+        currentX = (currentX / (float)Window.getWidth()) * 2.0f - 1.0f;
+        Vector4f tmp = new Vector4f(currentX, 0, 0, 1);
+        tmp.mul(Window.get().getScene().getCamera().getInverseProjection()).mul(Window.get().getScene().getCamera().getInverseView());
+        currentX = tmp.x;
+        System.out.println(currentX);
+        return currentX;
+    }
+
+    public static float getOrthoY() {
+        float currentY = Window.getHeight() - getY();
+        currentY = (currentY / (float)Window.getHeight()) * 2.0f - 1.0f;
+        Vector4f tmp = new Vector4f(0, currentY, 0, 1);
+        tmp.mul(Window.get().getScene().getCamera().getInverseProjection()).mul(Window.get().getScene().getCamera().getInverseView());
+        currentY = tmp.y;
+
+        return currentY;
     }
 }

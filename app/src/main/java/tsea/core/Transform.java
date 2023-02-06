@@ -1,4 +1,4 @@
-package tsea.scenes;
+package tsea.core;
 
 import org.joml.Vector2f;
 

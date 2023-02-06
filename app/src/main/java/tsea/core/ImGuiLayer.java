@@ -1,4 +1,4 @@
-package tsea;
+package tsea.core;
 
 import imgui.ImGui;
 import imgui.ImGuiIO;

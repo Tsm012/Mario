@@ -9,8 +9,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import tsea.GameObject;
-import tsea.scenes.Transform;
+import tsea.core.GameObject;
+import tsea.core.Transform;
 
 public class GameObjectDeserializer implements JsonDeserializer<GameObject> {
 

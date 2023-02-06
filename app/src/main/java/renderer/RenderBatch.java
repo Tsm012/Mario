@@ -5,7 +5,6 @@ import org.joml.Vector4f;
 
 
 import tsea.Window;
-import tsea.components.Sprite;
 import tsea.components.SpriteRenderer;
 import util.AssetPool;
 import util.AssetReferences;

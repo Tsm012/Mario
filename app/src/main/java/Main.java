@@ -1,5 +1,5 @@
-import tsea.ImGuiLayer;
 import tsea.Window;
+import tsea.core.ImGuiLayer;
 
 public class Main {
     public static void main(String[] args){

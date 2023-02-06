@@ -7,10 +7,24 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import imgui.ImGui;
-import tsea.GameObject;
+import tsea.core.GameObject;
 
 public abstract class Component {
+    private static int ID_COUNTER = 0;
+    private int UniqueId = -1;
     public transient GameObject gameObject;
+
+    
+    public int getUniqueId() {
+        return UniqueId;
+    }
+    public void generateUniqueId() {
+        this.UniqueId = UniqueId == -1 ? ID_COUNTER++ : UniqueId;
+    }
+   
+    public static void init(int maxId) {
+        ID_COUNTER = maxId;
+    }
 
     public void start() {}
     public void update(double deltatime){}

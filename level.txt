@@ -1,11 +1,14 @@
 [
   {
+    "UniqueId": 0,
     "name": "Object",
     "components": [
       {
         "type": "tsea.components.SpriteRenderer",
         "properties": {
           "sprite": {
+            "width": 0.0,
+            "height": 0.0,
             "textureCoords": [
               {
                 "x": 1.0,
@@ -26,23 +29,23 @@
             ]
           },
           "color": {
-            "x": 0.77,
-            "y": 0.17325002,
-            "z": 0.17325002,
+            "x": 0.15602498,
+            "y": 0.34481522,
+            "z": 0.39499998,
             "w": 1.0
-          }
+          },
+          "UniqueId": 0
         }
       },
       {
         "type": "tsea.components.RigidBody",
         "properties": {
-          "colliderType": 0,
-          "friction": 0.0,
           "velocity": {
             "x": 0.0,
             "y": 0.5,
             "z": 0.0
-          }
+          },
+          "UniqueId": 1
         }
       }
     ],
@@ -57,5 +60,290 @@
       }
     },
     "zIndex": 2
+  },
+  {
+    "UniqueId": 1,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "tsea.components.SpriteRenderer",
+        "properties": {
+          "sprite": {
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "C:\\Users\\Shant\\OneDrive\\Desktop\\Mario\\.\\assets\\images\\spritesheet.png",
+              "texId": 1,
+              "width": 224,
+              "height": 32
+            },
+            "textureCoords": [
+              {
+                "x": 0.35714287,
+                "y": 1.0
+              },
+              {
+                "x": 0.35714287,
+                "y": 0.5
+              },
+              {
+                "x": 0.2857143,
+                "y": 0.5
+              },
+              {
+                "x": 0.2857143,
+                "y": 1.0
+              }
+            ]
+          },
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "UniqueId": 2
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 412.0,
+        "y": 359.82224
+      },
+      "scale": {
+        "x": 32.0,
+        "y": 32.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "UniqueId": 2,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "tsea.components.SpriteRenderer",
+        "properties": {
+          "sprite": {
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "C:\\Users\\Shant\\OneDrive\\Desktop\\Mario\\.\\assets\\images\\spritesheet.png",
+              "texId": 1,
+              "width": 224,
+              "height": 32
+            },
+            "textureCoords": [
+              {
+                "x": 0.5714286,
+                "y": 0.5
+              },
+              {
+                "x": 0.5714286,
+                "y": 0.0
+              },
+              {
+                "x": 0.5,
+                "y": 0.0
+              },
+              {
+                "x": 0.5,
+                "y": 0.5
+              }
+            ]
+          },
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "UniqueId": 3
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 214.66666,
+        "y": 357.9556
+      },
+      "scale": {
+        "x": 32.0,
+        "y": 32.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "UniqueId": 3,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "tsea.components.SpriteRenderer",
+        "properties": {
+          "sprite": {
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "C:\\Users\\Shant\\OneDrive\\Desktop\\Mario\\.\\assets\\images\\spritesheet.png",
+              "texId": 1,
+              "width": 224,
+              "height": 32
+            },
+            "textureCoords": [
+              {
+                "x": 0.5,
+                "y": 1.0
+              },
+              {
+                "x": 0.5,
+                "y": 0.5
+              },
+              {
+                "x": 0.42857143,
+                "y": 0.5
+              },
+              {
+                "x": 0.42857143,
+                "y": 1.0
+              }
+            ]
+          },
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "UniqueId": 4
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 213.33334,
+        "y": 394.0445
+      },
+      "scale": {
+        "x": 32.0,
+        "y": 32.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "UniqueId": 4,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "tsea.components.SpriteRenderer",
+        "properties": {
+          "sprite": {
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "C:\\Users\\Shant\\OneDrive\\Desktop\\Mario\\.\\assets\\images\\spritesheet.png",
+              "texId": 1,
+              "width": 224,
+              "height": 32
+            },
+            "textureCoords": [
+              {
+                "x": 0.64285713,
+                "y": 0.5
+              },
+              {
+                "x": 0.64285713,
+                "y": 0.0
+              },
+              {
+                "x": 0.5714286,
+                "y": 0.0
+              },
+              {
+                "x": 0.5714286,
+                "y": 0.5
+              }
+            ]
+          },
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "UniqueId": 5
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 260.0,
+        "y": 361.68893
+      },
+      "scale": {
+        "x": 32.0,
+        "y": 32.0
+      }
+    },
+    "zIndex": 0
+  },
+  {
+    "UniqueId": 5,
+    "name": "Sprite_Object_Gen",
+    "components": [
+      {
+        "type": "tsea.components.SpriteRenderer",
+        "properties": {
+          "sprite": {
+            "width": 16.0,
+            "height": 16.0,
+            "texture": {
+              "filepath": "C:\\Users\\Shant\\OneDrive\\Desktop\\Mario\\.\\assets\\images\\spritesheet.png",
+              "texId": 1,
+              "width": 224,
+              "height": 32
+            },
+            "textureCoords": [
+              {
+                "x": 0.5,
+                "y": 1.0
+              },
+              {
+                "x": 0.5,
+                "y": 0.5
+              },
+              {
+                "x": 0.42857143,
+                "y": 0.5
+              },
+              {
+                "x": 0.42857143,
+                "y": 1.0
+              }
+            ]
+          },
+          "color": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0,
+            "w": 1.0
+          },
+          "UniqueId": 6
+        }
+      }
+    ],
+    "transform": {
+      "position": {
+        "x": 259.3333,
+        "y": 380.35562
+      },
+      "scale": {
+        "x": 32.0,
+        "y": 32.0
+      }
+    },
+    "zIndex": 0
   }
 ]

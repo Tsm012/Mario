@@ -5,7 +5,7 @@ import org.joml.Vector4f;
 
 import imgui.ImGui;
 import renderer.Texture;
-import tsea.scenes.Transform;
+import tsea.core.Transform;
 
 public class SpriteRenderer extends Component{
 

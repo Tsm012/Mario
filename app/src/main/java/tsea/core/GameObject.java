@@ -1,14 +1,14 @@
-package tsea;
+package tsea.core;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import tsea.components.Component;
-import tsea.scenes.Transform;
 
 public class GameObject {
-
+    private static int ID_COUNTER = 0;
+    private int UniqueId = -1;
     private String name;
     private List<Component> components;
     public Transform transform;
@@ -18,11 +18,16 @@ public class GameObject {
         return zIndex;
     }
 
-    public GameObject(String name) {
-        this.name = name;
-        this.components = new ArrayList<Component>();
-        this.transform = new Transform();
-        this.zIndex = 0;
+    public int getUniqueId() {
+        return UniqueId;
+    }
+
+    public List<Component> getallComponents() {
+        return this.components;
+    }
+
+    public static void init(int maxId) {
+        ID_COUNTER = maxId;
     }
 
     public GameObject(String name, Transform transform, int zIndex) {
@@ -30,6 +35,7 @@ public class GameObject {
         this.components = new ArrayList<Component>();
         this.transform = transform;
         this.zIndex = zIndex;
+        this.UniqueId = ID_COUNTER++;
     }
 
     public <T extends Component> T getComponent(Class<T> componentClass) {
@@ -51,6 +57,7 @@ public class GameObject {
     }
 
     public void addComponent(Component component) {
+        component.generateUniqueId();
         this.components.add(component); 
         component.gameObject = this;
     }

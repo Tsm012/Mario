@@ -1,12 +1,11 @@
 package renderer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import tsea.GameObject;
 import tsea.components.SpriteRenderer;
+import tsea.core.GameObject;
 
 public class Renderer {
     private final int MAX_BATCH_SIZE = 1000;
