@@ -1,9 +1,11 @@
 package tsea.scenes;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import imgui.ImGui;
 import imgui.ImVec2;
+import renderer.DebugDraw;
 import tsea.components.MouseControls;
 import tsea.components.RigidBody;
 import tsea.components.Sprite;
@@ -55,9 +57,18 @@ public class LevelEditorScene extends Scene {
         System.out.println("Level Editor Scene");
     }
 
+    float t = 0.0f;
+
     @Override
     public void update(double deltaTime) {
         mouseControls.update(deltaTime);
+
+        float x = (float)(Math.sin(t) * 200.0f) + 750;
+        float y = (float)(Math.cos(t) * 200.0f) + 400;
+
+        t += 0.05f;
+
+        DebugDraw.addLine2D(new Vector2f(750,400), new Vector2f(x,y), new Vector3f(1,0,0));
 
         this.gameObjects.forEach(gameObject -> gameObject.update(deltaTime));
         this.renderer.render();

@@ -104,7 +104,6 @@ public class MouseListener {
         Vector4f tmp = new Vector4f(currentX, 0, 0, 1);
         tmp.mul(Window.get().getScene().getCamera().getInverseProjection()).mul(Window.get().getScene().getCamera().getInverseView());
         currentX = tmp.x;
-        System.out.println(currentX);
         return currentX;
     }
 

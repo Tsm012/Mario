@@ -6,6 +6,7 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import imgui.ImGui;
+import renderer.DebugDraw;
 import tsea.core.ImGuiLayer;
 import tsea.input.KeyListener;
 import tsea.input.MouseListener;
@@ -195,10 +196,13 @@ public class Window {
 			// invoked during this call.
 			glfwPollEvents();
 
+			DebugDraw.beginFrame();
+
 			glClearColor(red, green, blue, alpha);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
 			if (deltaTime >= 0) {
+				DebugDraw.draw();
 				currentScene.update(deltaTime);
 			}
 			
