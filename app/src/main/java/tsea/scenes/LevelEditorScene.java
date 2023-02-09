@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 import imgui.ImGui;
 import imgui.ImVec2;
 import renderer.DebugDraw;
+import tsea.components.GridLines;
 import tsea.components.MouseControls;
 import tsea.components.RigidBody;
 import tsea.components.Sprite;
@@ -16,7 +17,7 @@ import tsea.core.GameObject;
 import tsea.core.Prefabs;
 import tsea.core.Transform;
 import util.AssetPool;
-import util.AssetReferences;
+import util.Settings;
 
 public class LevelEditorScene extends Scene {
 
@@ -24,31 +25,35 @@ public class LevelEditorScene extends Scene {
     private Spritesheet sprites;
 
     MouseControls mouseControls = new MouseControls();
+    GameObject levelEditorStuff = new GameObject("LevelEditor", new Transform(new Vector2f()), 0);
 
     @Override
     public void init() {
+        levelEditorStuff.addComponent(new MouseControls());
+        levelEditorStuff.addComponent(new GridLines());
+        
         loadResources();
         this.camera = new Camera(new Vector2f(-250,0));
 
-        sprites = AssetPool.getSpritesheet(AssetReferences.DEFAULT_SPRITESHEET_FILE);
+        sprites = AssetPool.getSpritesheet(Settings.DEFAULT_SPRITESHEET_FILE);
 
         if(this.levelLoaded){
             this.activeGameObject = gameObjects.get(0);
             return;
         }
 
-        gameObject = new GameObject("Object", new Transform(new Vector2f(200,100),new Vector2f(256,256)), 2);
-        gameObject.addComponent(new SpriteRenderer());
-        gameObject.addComponent(new RigidBody());
-        this.addGameObjectToScene(gameObject);
+        // gameObject = new GameObject("Object", new Transform(new Vector2f(200,100),new Vector2f(256,256)), 2);
+        // gameObject.addComponent(new SpriteRenderer());
+        // gameObject.addComponent(new RigidBody());
+        // this.addGameObjectToScene(gameObject);
 
-        this.activeGameObject = gameObject;
+        // this.activeGameObject = gameObject;
     }
 
     private void loadResources() {
-        AssetPool.getShader(AssetReferences.DEFAULT_VERTEX_FILE, AssetReferences.DEFAULT_SHADER_FILE);
-        AssetPool.addSpritesheet(AssetReferences.DEFAULT_SPRITESHEET_FILE, 
-            new Spritesheet(AssetPool.getTexture(AssetReferences.DEFAULT_SPRITESHEET_FILE),
+        AssetPool.getShader(Settings.DEFAULT_VERTEX_FILE, Settings.DEFAULT_SHADER_FILE);
+        AssetPool.addSpritesheet(Settings.DEFAULT_SPRITESHEET_FILE, 
+            new Spritesheet(AssetPool.getTexture(Settings.DEFAULT_SPRITESHEET_FILE),
             16, 16, 26,0));
 
     }
@@ -61,14 +66,8 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void update(double deltaTime) {
+        levelEditorStuff.update(deltaTime);
         mouseControls.update(deltaTime);
-
-        float x = (float)(Math.sin(t) * 200.0f) + 750;
-        float y = (float)(Math.cos(t) * 200.0f) + 400;
-
-        t += 0.05f;
-
-        DebugDraw.addLine2D(new Vector2f(750,400), new Vector2f(x,y), new Vector3f(1,0,0));
 
         this.gameObjects.forEach(gameObject -> gameObject.update(deltaTime));
         this.renderer.render();
@@ -94,9 +93,9 @@ public class LevelEditorScene extends Scene {
             Vector2f[] texCoords = sprite.getTextureCoordinates();
 
             ImGui.pushID(i);
-            if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[0].x, texCoords[0].y, texCoords[2].x, texCoords[2].y)) {
-                GameObject object = Prefabs.generateSpriteObject(sprite, spriteWidth, spriteHeight);
-                mouseControls.pickupObject(object);
+            if (ImGui.imageButton(id, spriteWidth, spriteHeight, texCoords[2].x, texCoords[0].y, texCoords[0].x, texCoords[2].y)) {
+                GameObject object = Prefabs.generateSpriteObject(sprite, 32, 32);
+                levelEditorStuff.getComponent(MouseControls.class).pickupObject(object);
             }
             ImGui.popID();
 

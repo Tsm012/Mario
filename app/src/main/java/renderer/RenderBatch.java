@@ -7,7 +7,7 @@ import org.joml.Vector4f;
 import tsea.Window;
 import tsea.components.SpriteRenderer;
 import util.AssetPool;
-import util.AssetReferences;
+import util.Settings;
 
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
@@ -54,7 +54,7 @@ public class RenderBatch implements Comparable<RenderBatch>{
 
     public RenderBatch(int maxBatchSize,int zIndex) {
         this.zIndex = zIndex;
-        this.shader = AssetPool.getShader(AssetReferences.DEFAULT_VERTEX_FILE, AssetReferences.DEFAULT_SHADER_FILE); 
+        this.shader = AssetPool.getShader(Settings.DEFAULT_VERTEX_FILE, Settings.DEFAULT_SHADER_FILE); 
         this.sprites = new ArrayList<SpriteRenderer>();
         this.maxBatchSize = maxBatchSize;
 
