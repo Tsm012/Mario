@@ -10,6 +10,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.type.ImBoolean;
 import tsea.Window;
+import tsea.editor.GameViewWindow;
 import tsea.scenes.Scene;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -42,7 +43,7 @@ public class ImGuiLayer {
         ImGui.newFrame();
         setupDockspace();
         currentScene.sceneImgui();
-
+        GameViewWindow.imgui();
         //ImGui.end();
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());

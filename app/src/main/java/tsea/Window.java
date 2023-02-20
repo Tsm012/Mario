@@ -61,7 +61,7 @@ public class Window {
 		this.width = 1920;
 		this.height = 1080;
 		this.title = "Mario";
-		this.red = this.blue = this.green = this.alpha = 0;
+		this.red = this.blue = this.green = this.alpha = 1;
 	}
 
 	private static Window window = null;
@@ -132,6 +132,9 @@ public class Window {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
+		this.framebuffer = new FrameBuffer(3840, 2160);
+        glViewport(0, 0, 3840, 2160);
+
 		Window.changeScene(SCENE.LEVEL_EDITOR);
 	}
 
@@ -200,6 +203,8 @@ public class Window {
 
 			DebugDraw.beginFrame();
 
+			this.framebuffer.bind();
+
 			glClearColor(red, green, blue, alpha);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
@@ -207,7 +212,7 @@ public class Window {
 				DebugDraw.draw();
 				currentScene.update(deltaTime);
 			}
-			
+			this.framebuffer.unbind();
 			imguiLayer.update(deltaTime, currentScene);
 
 			glfwSwapBuffers(windowPointer); // swap the color buffers
