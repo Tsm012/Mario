@@ -2,6 +2,7 @@ package tsea.input;
 
 import java.util.HashMap;
 
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
@@ -14,6 +15,9 @@ public class MouseListener {
     private double xPosition, yPosition, lastX, lastY;
     private HashMap<Integer, Boolean> mouseButtonPressed = new HashMap<Integer,Boolean>();
     private boolean isDragging;
+
+    private Vector2f gameViewportPos = new Vector2f();
+    private Vector2f gameViewportSize = new Vector2f();
 
     private MouseListener() {
         this.scrollX = 0.0;
@@ -115,5 +119,11 @@ public class MouseListener {
         currentY = tmp.y;
 
         return currentY;
+    }
+
+    public static void setGameViewportPos(Vector2f gameViewportPos) { get().gameViewportPos.set(gameViewportPos); }
+
+    public static void setGameViewportSize(Vector2f gameViewportSize) {
+        get().gameViewportSize.set(gameViewportSize);
     }
 }

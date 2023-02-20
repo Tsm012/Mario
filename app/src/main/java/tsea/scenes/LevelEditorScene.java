@@ -8,7 +8,6 @@ import imgui.ImVec2;
 import renderer.DebugDraw;
 import tsea.components.GridLines;
 import tsea.components.MouseControls;
-import tsea.components.RigidBody;
 import tsea.components.Sprite;
 import tsea.components.SpriteRenderer;
 import tsea.components.Spritesheet;
@@ -21,7 +20,7 @@ import util.Settings;
 
 public class LevelEditorScene extends Scene {
 
-    private GameObject gameObject;
+    // private GameObject gameObject;
     private Spritesheet sprites;
 
     MouseControls mouseControls = new MouseControls();
@@ -38,7 +37,9 @@ public class LevelEditorScene extends Scene {
         sprites = AssetPool.getSpritesheet(Settings.DEFAULT_SPRITESHEET_FILE);
 
         if(this.levelLoaded){
-            this.activeGameObject = gameObjects.get(0);
+            if(gameObjects.size() > 0) {
+                this.activeGameObject = gameObjects.get(0);
+            } 
             return;
         }
 
@@ -55,18 +56,34 @@ public class LevelEditorScene extends Scene {
         AssetPool.addSpritesheet(Settings.DEFAULT_SPRITESHEET_FILE, 
             new Spritesheet(AssetPool.getTexture(Settings.DEFAULT_SPRITESHEET_FILE),
             16, 16, 26,0));
-
+        
+        for(GameObject gameObject: this.gameObjects){
+            if(gameObject.getComponent(SpriteRenderer.class) != null) {
+                SpriteRenderer spriteRender = gameObject.getComponent(SpriteRenderer.class);
+                if(spriteRender.getTexture() != null) {
+                    spriteRender.setTexture(AssetPool.getTexture(spriteRender.getTexture().getFilePath()));
+                }
+            }
+        }
     }
 
     public LevelEditorScene() {
         System.out.println("Level Editor Scene");
     }
 
-    float t = 0.0f;
+    float x = 200.0f;
+    float y = 200.0f;
+    float angle = 0.0f;
 
     @Override
     public void update(double deltaTime) {
         levelEditorStuff.update(deltaTime);
+        DebugDraw.addCircle(new Vector2f(x,y), 64, new Vector3f(0,1,0), 1);
+        DebugDraw.addBox2D(new Vector2f(200, 200), new Vector2f(64,32), angle, new Vector3f(1,0,0), 1);
+        angle += 15.0f * (float)deltaTime;
+        x += 5.0f * (float)deltaTime;
+        y += 5.0f * (float)deltaTime;
+
         mouseControls.update(deltaTime);
 
         this.gameObjects.forEach(gameObject -> gameObject.update(deltaTime));

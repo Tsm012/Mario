@@ -10,7 +10,22 @@ import org.lwjgl.BufferUtils;
 
 public class Texture {
     private String filepath;
-    private int texId, width, height;
+    private transient int texId;
+    private int width, height;
+
+    public Texture(int width, int height) {
+        this.filepath = "Generated";
+
+        // Generate texture on GPU
+        this.texId = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, texId);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height,
+                0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+    }
 
     public int getHeight() {
         return height;
@@ -76,5 +91,19 @@ public class Texture {
 
     public int getId() {
         return texId;
+    }
+
+    public String getFilePath() {
+        return this.filepath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (!(o instanceof Texture)) return false;
+        Texture oTex = (Texture)o;
+        return oTex.getWidth() == this.width && oTex.getHeight() == this.height &&
+                oTex.getId() == this.texId &&
+                oTex.getFilePath().equals(this.filepath);
     }
 }

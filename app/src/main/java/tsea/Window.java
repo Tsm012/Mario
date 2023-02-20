@@ -7,6 +7,7 @@ import org.lwjgl.system.*;
 
 import imgui.ImGui;
 import renderer.DebugDraw;
+import renderer.FrameBuffer;
 import tsea.core.ImGuiLayer;
 import tsea.input.KeyListener;
 import tsea.input.MouseListener;
@@ -27,6 +28,7 @@ public class Window {
 	
 	private String title;
 	private int width, height;
+	private FrameBuffer framebuffer;
 	public static int getWidth() {
         return get().width;
     }
@@ -218,4 +220,12 @@ public class Window {
 
 		currentScene.saveExit();
 	}
+
+	public static FrameBuffer getFramebuffer() {
+        return get().framebuffer;
+    }
+
+    public static float getTargetAspectRatio() {
+        return 16.0f / 9.0f;
+    }
 }

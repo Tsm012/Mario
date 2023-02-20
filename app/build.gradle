@@ -38,6 +38,9 @@ dependencies {
 	//GSON
 	implementation 'com.google.code.gson:gson:2.10.1'
 
+	//GSON
+	implementation 'com.google.code.gson:gson:2.10.1'
+
 	//IMGUI
  	implementation "io.github.spair:imgui-java-app:$imguiVersion"
 	implementation "io.github.spair:imgui-java-binding:$imguiVersion"
